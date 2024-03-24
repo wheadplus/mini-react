@@ -1,33 +1,28 @@
-// v0.1 实现 vdom+dom渲染
-
-// 创建一个div元素
-// const dom = document.createElement('div');
-// dom.id = 'app';
-// document.querySelector('#root').appendChild(dom);
-// // 创建一个文本节点
-// const textNode = document.createTextNode("");
-// textNode.nodeValue = 'app'
-// dom.appendChild(textNode);
-
-// v0.2 定义vdom的数据结构
-const textEl = {
-    type:"TEXT_ELEMENT",
-    props:{
-        nodeValue:"app",
-        children: []
+// v0.3 动态创建vdom
+function createTextElement(value) {
+    return {
+        type: 'TEXT_ELEMENT',
+        props: {
+            nodeValue: value,
+            children: []
+        }
     }
 }
-
-const el = {
-    type: 'div',
-    props: {
-        id: 'app',
-        children: textEl
-    }
+function createElement(type, props, ...children) {
+    return {
+        type,
+        props: {
+            ...props,
+            children
+        }
+    }    
 }
 
-const dom = document.createElement(el.type)
-dom.id = el.props.id
+const textEl = createTextElement('app');
+const app = createElement('div', { id: 'root' }, textEl);
+
+const dom = document.createElement(app.type)
+dom.id = app.props.id
 document.querySelector('#root').appendChild(dom)
 
 const textNode = document.createTextNode('');
