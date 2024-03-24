@@ -1,4 +1,4 @@
-import React from "./core/React.js";
+import React from "../core/React.js";
 
 const App = React.createElement('div', { id: 'app' }, 'hihi ', 'mini-react');
 

@@ -32,7 +32,7 @@ function render(el, container) {
     children.forEach(child => {
         render(child, dom)
     })
-    container.appendChild(dom);
+    container && container.appendChild(dom);
 }
 
 const React = {
