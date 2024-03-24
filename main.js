@@ -1,5 +1,5 @@
-import React from "./core/React";
-import ReactDOM from "./core/ReactDOM";
+import React from "./core/React.js";
+import ReactDOM from "./core/ReactDOM.js";
 
 const app = React.createElement('div', { id: 'app' }, 'hihi ', 'mini-react');
 
