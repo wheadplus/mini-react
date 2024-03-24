@@ -1,5 +1,5 @@
 // v0.3 动态创建vdom
-function createTextElement(value) {
+function createTextNode(value) {
     return {
         type: 'TEXT_ELEMENT',
         props: {
@@ -13,18 +13,41 @@ function createElement(type, props, ...children) {
         type,
         props: {
             ...props,
-            children
+            children: children.map(child => {
+                return typeof child === 'string' ? createTextNode(child) : child;
+            })
         }
     }    
 }
 
-const textEl = createTextElement('app');
-const app = createElement('div', { id: 'root' }, textEl);
 
-const dom = document.createElement(app.type)
-dom.id = app.props.id
-document.querySelector('#root').appendChild(dom)
+// v0.4 写死的渲染dom改成函数，动态生成
+function render(el, container) {
+    const dom = el.type === 'TEXT_ELEMENT'
+        ? document.createTextNode('')
+        : document.createElement(el.type);
+    Object.keys(el.props).forEach(key => {
+        if (key !== 'children') {
+            dom[key] = el.props[key];
+        }
+    })
+    const children = el.props.children || [];
+    children.forEach(child => {
+        render(child, dom)
+    })
+    container.appendChild(dom);
+}
 
-const textNode = document.createTextNode('');
-textNode.nodeValue = textEl.props.nodeValue;
-dom.appendChild(textNode);
+const ReactDOM = {
+    createRoot(container) {
+        return {
+            render(App) {
+                render(App, container);
+            }
+        }
+    }
+}
+
+const app = createElement('div', { id: 'app' }, 'hihi ', 'mini-react');
+
+ReactDOM.createRoot(document.getElementById('root')).render(app);
